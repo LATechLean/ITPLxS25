@@ -7,5 +7,5 @@ Before getting started, you will need the following:
     - Linux/Unix: Most package managers include git.  See [here](https://git-scm.com/downloads/linux) for more details.
     - Mac: Homebrew and MacPorts both include git.  See [here](https://git-scm.com/downloads/mac) for more details.
     - Windows: You can find an installer [here](https://git-scm.com/downloads/win).
-2. [`lean`](https://docs.lean-lang.org/lean4/doc/quickstart.html)
-3. [`VSCode`](https://code.visualstudio.com)
+2. [`VSCode`](https://code.visualstudio.com)
+3. [`lean`](https://docs.lean-lang.org/lean4/doc/quickstart.html)
