@@ -1,5 +1,4 @@
 import Mathlib.tactic
-import Mathlib.Algebra.Group.Defs
 
 namespace Lecture_01
 /-
@@ -298,15 +297,6 @@ def ev_1 (f : ℕ → ℕ) := f 1
 -/
 def double (x : ℕ) : ℕ := sorry
 
-/-
-  Define a function
-    double₂ : ℕ → ℕ
-  that doubles the input using either λ or fun.
--/
-def double₂ := sorry
-
--- Make sure it type checks!
-#check (double₂ : ℕ → ℕ)
 
 /-
   Define a function
@@ -331,7 +321,7 @@ def greater (x y : ℕ) : ℕ := sorry
   Suppose that α : Type.
   Write a function
     doTwice : (α → α) → α → α
-  that applies a a function f : α → α to a : α twice.
+  that applies a function f : α → α to a : α two times.
 -/
 def doTwice (α : Type) (f : α → α) (a : α) : α := sorry
 
@@ -341,7 +331,7 @@ def doTwice (α : Type) (f : α → α) (a : α) : α := sorry
   Suppose that α : Type.
   Write a function
     doThrice : (α → α) → α → α
-  that applies a a function f : α → α to a : α twice.
+  that applies a function f : α → α to a : α three times.
 -/
 def doThrice (α : Type) (f : α → α) (a : α) : α := sorry
 
