@@ -11,9 +11,6 @@ package «ITPLxS25» where
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git"
 
-require autograder from git
-  "https://github.com/robertylewis/lean4-autograder-main.git"
-
 @[default_target]
 lean_lib «ITPLxS25» where
   -- add any library configuration options here
