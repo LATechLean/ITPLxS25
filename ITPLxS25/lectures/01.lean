@@ -185,34 +185,30 @@ universe u
 
 #eval (λ x ↦ x + 5) 10
 
+#check (λ ((x,y) : ℕ × ℕ) ↦ x + y : ℕ × ℕ → ℕ)
+#eval (λ ((x,y) : ℕ × ℕ) ↦ x + y) (1,2)
+
 /-
   We can create functions of multiple variables using either nested λs.
   For example, a function of two natural numbers has type
     ℕ → ℕ → ℕ
 -/
 
-#check (λ (x : ℕ) ↦ (λ (y: ℕ) ↦ x) : ℕ → ℕ → ℕ)
-#check (λ (x : ℕ) ↦ (λ (y : ℕ) ↦ y) : ℕ → ℕ → ℕ)
+#check (λ (x : ℕ) ↦ (λ (y: ℕ) ↦ x + y) : ℕ → ℕ → ℕ)
 
 /-
   This notation is cumbersome.  Lean allows us to reduce to a single λ as follows:
 -/
 
-#check (λ (x : ℕ) (y : ℕ) ↦ x : ℕ → ℕ → ℕ)
-#check (λ (x : ℕ) (y : ℕ) ↦ y : ℕ → ℕ → ℕ)
+#check (λ (x : ℕ) (y : ℕ) ↦ x + y: ℕ → ℕ → ℕ)
 
-#eval (λ (x : ℕ) (y : ℕ) ↦ x : ℕ → ℕ → ℕ) 1 2               -- Evaluates to 1
-#eval (λ (x : ℕ) (y : ℕ) ↦ y : ℕ → ℕ → ℕ) 1 2               -- Evaluates to 2
+#eval (λ (x : ℕ) (y : ℕ) ↦ x + y) 1 2               -- Evaluates to 3
 
 /-
   Lean allows us to reduce even further by grouping terms of the same type
 -/
-#check (λ (x y : ℕ) ↦ x : ℕ → ℕ → ℕ)
-#check (λ (x y : ℕ) ↦ y : ℕ → ℕ → ℕ)
-
-#eval (λ (x y : ℕ) ↦ x : ℕ → ℕ → ℕ) 1 2               -- Evaluates to 1
-#eval (λ (x y : ℕ) ↦ y : ℕ → ℕ → ℕ) 1 2               -- Evaluates to 2
-
+#check (λ (x y : ℕ) ↦ x + y: ℕ → ℕ → ℕ)
+#eval (λ (x y : ℕ) ↦ x + y ) 1 2               -- Evaluates to 3
 
 /-
   NOTE: We can think of the ℕ → ℕ → ℕ as being a function that accepts as input a
