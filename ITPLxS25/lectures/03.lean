@@ -18,7 +18,7 @@ namespace Lecture_03
     · Implication: p → q.
     · Conjunction: And p q or p ∧ q
     · Disjunction: Or p q or p ∨ q
-    . Biconditional: p ↔ q.
+    . Biconditional: Iff p q or p ↔ q.
 -/
 
 section
