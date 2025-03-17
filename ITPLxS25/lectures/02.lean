@@ -19,8 +19,8 @@ def s := "Hello, world!"
 
 /-
   When the term we want to define is a function, we can omit the lambda notation.
-    · Arguments to our function appear after the name and before a semicolon.
-    · The type of the output appears after the semicolon.
+    · Arguments to our function appear after the name and before a colon.
+    · The type of the output appears after the colon.
     · The output term appears after the := symbol.
 -/
 def first (x y : ℕ) : ℕ := x
