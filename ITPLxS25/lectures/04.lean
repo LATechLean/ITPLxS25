@@ -67,59 +67,42 @@ theorem not_or₂ (p q : Prop) : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
   parse the goal that is being proven.
 -/
 
-theorem not_or₃ (p q : Prop) : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
-  Iff.intro
-    (λ (h_mp : ¬(p ∨ q)) ↦
-        show ¬p ∧ ¬q from And.intro
-          (λ (h_p : p) ↦ show False from h_mp (Or.inl h_p))
-          (λ (h_q : q) ↦ show False from h_mp (Or.inr h_q)))
-    (λ (h_mpr : ¬p ∧ ¬ q) (h_pq : p ∨ q) ↦
-      show False from Or.elim (h_pq)
-        (λ (h_p : p) ↦ show False from h_mpr.left h_p)
-        (λ (h_q : q) ↦ show False from h_mpr.right h_q))
-
-
 /-
   Another tool that can help improve readability is to define and prove subgoals.
   In longer proofs, this is common to help focus the reader's attention on a particular
   task.
--/
 
-theorem not_or₄ (p q : Prop) : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
-  Iff.intro
-    (λ (h_mp : ¬(p ∨ q)) ↦
-      have h_np : ¬p := λ (h_p : p) ↦ h_mp (Or.inl h_p)
-      have h_nq : ¬q := λ (h_q : q) ↦ h_mp (Or.inr h_q)
-      show ¬p ∧ ¬q from And.intro h_np h_nq)
-    (λ (h_mpr : ¬p ∧ ¬q) (h_pq : p ∨ q) ↦
-      have h_np : ¬p := h_mpr.left
-      have h_nq : ¬q := h_mpr.right
-      show False from Or.elim (h_pq)
-        (λ (h_p : p) ↦ show False from h_np h_p)
-        (λ (h_q : q) ↦ show False from h_nq h_q))
+  If you have a subgoal of type t, you can introduce the subgoal and its proof using the
+  have keyword.
+    have name : t :=
+      <your proof goes here>
+  The name you specify will appear in the Infoview.
+-/
 
 /-
   In longer proofs, it is quite common to reduce the proof to a particular statement.
   This frequently occurs as a courtesy to the reader, such as when the next
   step is seemingly unintuitive or unmotivated.
 
+  This is achieved using the suffices keyword.  It has the form
+    suffices <your sufficient condition goes here> from <your proof the condition is sufficient>
+    <your proof of the sufficient condition>
 -/
 
--- associativity of ∧ and ∨
-example (p q r : Prop) : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) :=
+theorem not_or₃ (p q : Prop) : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
   Iff.intro
-    (λ h_mp : (p ∧ q) ∧ r ↦
-      have h_p : p := h_mp.left.left
-      have h_q : q := h_mp.left.right
-      have h_r : r := h_mp.right
-      suffices h_qr : q ∧ r from ⟨h_p, h_qr⟩
-      ⟨h_q,h_r⟩)
-    (λ h_mpr : p ∧ q ∧ r ↦
-      have h_p : p := h_mpr.left
-      have h_q : q := h_mpr.right.left
-      have h_r : r := h_mpr.right.right
-      suffices h_pq : p ∧ q from ⟨h_pq,h_r⟩
-      ⟨h_p,h_q⟩)
+    ( λ h_mp : ¬(p ∨ q) ↦ ⟨λ h_p : p ↦
+      show False from
+      suffices h_pq : p ∨ q from h_mp h_pq
+      Or.inl h_p,
+      λ h_q : q ↦
+        show False from
+        suffices h_pq : p ∨ q from h_mp h_pq
+        Or.inr h_q⟩)
+    (λ (h_mpr : ¬p ∧ ¬ q) (h_pq : p ∨ q) ↦
+      show False from Or.elim (h_pq)
+        (λ (h_p : p) ↦ show False from h_mpr.left h_p)
+        (λ (h_q : q) ↦ show False from h_mpr.right h_q))
 
 /-
   Classical Logic
