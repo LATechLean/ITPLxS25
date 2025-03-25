@@ -12,15 +12,31 @@ Before getting started, you will need the following:
 
 ## Setup
 
-1. Clone the repository.  You can do this using Visual Studio Code Source Control from the left-hand side.
-   - With the Source Control open, click Clone Repository
-   - At the top of the VS Code window, click Clone from GitHub
-   - Type in LATechLean/ITPLxS25
+1. Clone the repository.
+- You can do this within Visual Studio Code using the Source Control menu on the left-hand side.
+   - With the Source Control open, click `Clone Repository`.
+   - At the top of the VS Code window, click `Clone from GitHub`.
+   - In the same menu bar, type in <br/>
+   ```
+    LATechLean/ITPLxS25
+   ```
    - Select a location to put the folder.
-   - Click Open from the popup window.
-   - You can choose to trust the autor or not.
-2. Update
-   - Right click on ITPLxS25 and select Open in Integrated Terminal
-   - Change to the top level of the repository using `cd ..`
-   - type in `lake exe cache get`
+   - Click `Open` from the popup window.
+   - You can choose to trust the author or not.
+- From the command line
+    - Change into the directory where you would like clone the repository.
+    - Enter the command <br/>
+      ```
+      git clone https://github.com/LATechLean/ITPLxS25.git
+      ```
+3. Update
+   - From Visual Studio Code, Right click on `ITPLxS25` and select `Open in Integrated Terminal`.
+   - Change to the top level of the repository using
+     ```
+     cd ..
+     ```
+   - type in
+     ```
+     lake exe cache get
+     ```
  You should have a working repository!
