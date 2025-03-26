@@ -1,6 +1,9 @@
 import Mathlib
+import ITPLxS25.lectures.«05»
 
 namespace Lecture_06
+open Lecture_05
+
 /-
   Existential Quantifiers
 -/
@@ -11,8 +14,6 @@ namespace Lecture_06
   f : ℝ → ℝ is bounded above (resp. below), what we mean is
     ∃ a : ℝ, FnUb f a (resp. ∃ a : ℝ, FnLb f a).
 -/
-
-section
 
 def FnHasUb (f : ℝ → ℝ) :=
   ∃ a : ℝ, FnUb f a
@@ -38,6 +39,7 @@ section
   #check (⟨a, h_a⟩ : ∃ x, p x)
 end
 
+section
 /-
   The elimination rule is used to produce from an existential statement a particular term
   that satisfies the quantified statement.
@@ -46,6 +48,7 @@ end
   has an upper bound, then so does f + g : ℝ → ℝ.  In spirit, this proof is very similar
   to the first example using FnUb:
 -/
+variable (f g: ℝ → ℝ) (a b : ℝ)
 example (hfa : FnUb f a) (hgb : FnUb g b) : FnUb (fun x ↦ f x + g x) (a + b) :=
     λ x : ℝ ↦ add_le_add (hfa x) (hgb x)
 /-
@@ -62,7 +65,7 @@ example (hfa : FnUb f a) (hgb : FnUb g b) : FnUb (fun x ↦ f x + g x) (a + b) :
 end
 
 section
-
+variable (f g : ℝ → ℝ)
 example (ubf : FnHasUb f) (ubg : FnHasUb g) : FnHasUb fun x ↦ f x + g x :=
   Exists.elim ubf
     λ (a : ℝ) (h_a : FnUb f a) ↦ Exists.elim ubg
@@ -267,5 +270,4 @@ example (h : ∀ a : ℝ, ∃ x : ℝ, f x > a) : ¬FnHasUb f :=
     lt_irrefl ub h_ub_lt_self
 end
 
-section
 end Lecture_06
