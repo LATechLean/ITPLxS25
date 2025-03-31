@@ -1,8 +1,8 @@
 import Mathlib
 namespace Lecture_05
-/-
-Dependent Types
--/
+
+section Dependent_Types
+
 
 /-
   So far, we have seen only simple types such as String, Bool, Prop, ℕ, etc.
@@ -28,9 +28,9 @@ Dependent Types
 def is_nonneg (n : ℤ) : Prop := 0 ≤ n
 #check (is_nonneg : ℤ → Prop)
 
-/-
-  Universal Quantifiers
--/
+end Dependent_Types
+
+section Universal_Quantifiers
 
 /-
   We normally encounter predicates in quantified statements.  As a simple example,
@@ -180,4 +180,7 @@ end
 
 example (hfa : FnUb f a) (hgb : FnUb g b) (nng : FnLb g 0) (nna : 0 ≤ a) :
     FnUb (fun x ↦ f x * g x) (a * b) := sorry
+
+end Universal_Quantifiers
+
 end Lecture_05
