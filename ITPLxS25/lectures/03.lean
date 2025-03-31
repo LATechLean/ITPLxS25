@@ -1,9 +1,8 @@
 import Mathlib
 
 namespace Lecture_03
+section Propositions_as_Types
 /-
-  Propositions as Types
-
   In Lean, propositions are their own type, Prop. Two built-in terms of type Prop are
     · True - the proposition that is always true.
     · False - the proposition that is always false
@@ -32,6 +31,9 @@ section
   #check p ↔ q     -- The bicondition p if and only if q.
 end
 
+end Propositions_as_Types
+
+section Negation
 /-
   The case of negation is likely the strangest of the lot.  The type ¬p is
   actually shorthand for p → False.  We will see how this is useful in the future.
@@ -43,6 +45,9 @@ section
   #check (h_np : p → False)
 end
 
+end Negation
+
+section Theorems
 /-
   In order to work with propositions and proof, we need a way to declare them.
   We have three keywords for doing so:
@@ -71,7 +76,6 @@ theorem myTheorem : (p : Prop) → (h_p : p) → (h_np : ¬p) → False := sorry
   Just as for functions, we can replace the → construction by placing arguments
   (hypotheses) to the left of the colon and the resulting type (conclusion) to the right.
 -/
-
 
 theorem myEquivalentTheorem (p : Prop) (h_p : p) (h_np : ¬p): False  := sorry
 
@@ -118,7 +122,9 @@ example: (p : Prop) → (h_p : p) → p  :=
     h_np h_p : (p → False) p = False
   is precisely the False term we need to construct.
 -/
+end Theorems
 
+section Implication
 example (p : Prop) (h_p : p) (h_np : ¬p) : False := h_np h_p
 
 /-
@@ -204,6 +210,7 @@ example (p q : Prop) (h_np : ¬p) (h_nq : ¬ q) : p → q :=
 
 example (p q : Prop) (h_np : ¬p) : p → q :=
   λ (h_p : p) ↦ False.elim (h_np h_p)
+end Implication
 
 /-
   Working with the the other logical structures (∧, ∨, ↔) require two rules
@@ -212,6 +219,8 @@ example (p q : Prop) (h_np : ¬p) : p → q :=
     · Elimination
       - Extracts information from a compound proposition.
 -/
+
+section Disjunction
 
 /-
   The disjunction comes equipped with two introduction rules -- one for the left
@@ -302,6 +311,9 @@ example (p q : Prop) (h_np: ¬p) (h_nq: ¬q) : ¬(p ∨ q) :=
       (λ (h_p : p) ↦ h_np h_p)                          -- Case 1
       (λ (h_q : q) ↦ h_nq h_q))                         -- Case 2
 
+end Disjunction
+
+section Conjunction
 /-
   Conjunction has similar rules for introduction and elimination.
 
@@ -358,7 +370,9 @@ example (p q : Prop) (h_np : ¬p) (h_nq : ¬q) : ¬(p ∧ q) :=
 
 example (p q : Prop) (h_np : ¬p) (h_nq : ¬q) : ¬(p ∧ q) :=
   λ (h_pq : p ∧ q) ↦ h_np h_pq.left
+end Conjunction
 
+section Biconditional
 /-
   Similar to conjunction, the biconditional comes equipped with a single introduction rule and two
   elimination rules.
@@ -434,4 +448,6 @@ example (p q : Prop) (h_np : ¬p) (h_nq : ¬q) : p ↔ q :=
    Iff.intro
    (λ (h_p : p) ↦ False.elim (h_np h_p))
    (λ (h_q : q) ↦ False.elim (h_nq h_q))
+
+end Biconditional
 end Lecture_03
