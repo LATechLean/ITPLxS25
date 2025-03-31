@@ -4,9 +4,8 @@ import ITPLxS25.lectures.«05»
 namespace Lecture_06
 open Lecture_05
 
-/-
-  Existential Quantifiers
--/
+
+section  Existential_Quantifiers
 
 /-
   While the assertion f is bounded above by a is a universally quantified statement, asserting
@@ -146,9 +145,9 @@ example (h : ∃ x, p x ∧ q x) : ∃ x, q x ∧ p x := let ⟨x, h_px, h_qx⟩
 
 end
 
-/-
-  Negating quantifiers
--/
+end Existential_Quantifiers
+
+section Negating_Quantifiers
 
 /-
   On a first pass, negating quantifiers is frequently a difficult task.  In general, it requires
@@ -269,5 +268,7 @@ example (h : ∀ a : ℝ, ∃ x : ℝ, f x > a) : ¬FnHasUb f :=
       lt_of_lt_of_le h_x (h_ub x)
     lt_irrefl ub h_ub_lt_self
 end
+
+end Negating_Quantifiers
 
 end Lecture_06
