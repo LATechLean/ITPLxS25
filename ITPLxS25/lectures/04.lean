@@ -1,6 +1,7 @@
 import Mathlib
 namespace Lecture_04
 
+section Structured_Proofs
 /-
   As we build up to more elaborate proofs, we will start to see the λ constructions
   will quickly become unwieldy.  For example, let us consider the term proof for
@@ -104,9 +105,11 @@ theorem not_or₃ (p q : Prop) : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
         (λ (h_p : p) ↦ show False from h_mpr.left h_p)
         (λ (h_q : q) ↦ show False from h_mpr.right h_q))
 
-/-
-  Classical Logic
+end Structured_Proofs
 
+section Classical_Logic
+
+/-
   So far, the logic we have used does not assume that our propositions must be either
   true or false.  In order to utilize this type of reasoning, we need the Classical library.
   The assertion that p : Prop must be either true or false is an axiom called the
@@ -152,4 +155,7 @@ lemma em_lemma (p : Prop) : ¬¬(p ∨ ¬p) :=
   Now we push everything through DNE.
 -/
 theorem em (p : Prop) : p ∨ ¬p := (dne (p ∨ ¬p)).mp (em_lemma p)
+
+end Classical_Logic
+
 end Lecture_04
