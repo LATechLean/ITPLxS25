@@ -1,10 +1,7 @@
-import Mathlib.tactic
+import Mathlib
 
 namespace Lecture_01
-/-
-  Simple Type Theory
--/
-
+section  Simple_Type_Theory
 /-
   Lean's foundation is known as the Calculus of Inductive Constructions.
   For our puroses, we restrict ourselves to a piece of this foundation called
@@ -253,4 +250,5 @@ universe u
 #check (λ (x : ℕ) (y : Bool) ↦ if not y then x + 1 else x + 2 : ℕ → Bool → ℕ)
 #check (λ x y ↦ if not y then x + 1 else x + 2 : ℕ → Bool → ℕ)
 
+end Simple_Type_Theory
 end Lecture_01
