@@ -1,9 +1,7 @@
 import Mathlib
 
 namespace Lecture_02
-/-
-  Definitions
--/
+section Definitions
 
 /-
   Having to write out these expressions over and over again is also quite cumbersome.
@@ -117,8 +115,9 @@ def square (x : ℕ) : ℕ := sorry
     · square
   defined above.
 -/
+end Definitions
 
-/- Local Definitions-/
+section Local_Definitions
 
 /-
   The let keyword in Lean allows us to simplify expressions using a local definition.
@@ -172,11 +171,9 @@ def twice_double₂ (x : ℕ) : ℕ :=
 
 #eval twice_double 2   -- 16
 #eval twice_double₂ 2  -- Also 16.
+end Local_Definitions
 
-
-/-
-  Variables and Sections
--/
+section Variables_and_Sections
 
 /-
   Recall the function definitions above:
@@ -257,11 +254,9 @@ end useful
 #check U
 #check compose₄
 #print compose₄
+end Variables_and_Sections
 
-
-/-
-  Namespaces
--/
+section Namespaces
 
 /-
   Namespaces are similar to sections.  Unlike a section, all definitions are internal to the
@@ -343,5 +338,5 @@ namespace Foo
   #check add_fourteen_a       -- Note these are not the same.
   #check Bar.add_fourteen_a
 end Foo
-
+end Namespaces
 end Lecture_02
