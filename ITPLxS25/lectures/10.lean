@@ -91,9 +91,10 @@ infixl:65 "+" => add
 -/
 
 /-- For all `n : Nat`, `0 + n = n`-/
-theorem zero_add (n : Nat) : add Nat.zero n = n := rfl
+theorem zero_add (n : Nat) : Nat.zero + n = n := rfl
+
 /-- For all `m n : Nat`, `(m + 1) + n = (m + n) + 1`-/
-theorem succ_add (m n : Nat) : add (succ m) n = succ (add m n) := rfl
+theorem succ_add (m n : Nat) : (succ m) + n = succ (m + n) := rfl
 
 /-
   However, it cannot infer that m + 0 = m automatically.  In order to accomplish
@@ -101,31 +102,24 @@ theorem succ_add (m n : Nat) : add (succ m) n = succ (add m n) := rfl
 -/
 
 /-- For all `m : Nat`, `m + 0 = m`.-/
-theorem add_zero (m : Nat) : add m Nat.zero = m := by
+theorem add_zero (m : Nat) : m + Nat.zero = m := by
   induction m with
   | zero => rfl       -- Base case m = 0: 0 + 0 = 0 := rfl
   | succ m ih =>      -- Assume m + 0 = m.  Prove (m + 1) + 0 = m + 1.
     rw [add,ih]
 
 /-
-  This proof is essentially the observation that,
-    (m + 1) + 0 := add (succ m) + Nat.zero
-                 = succ (add m Nat.zero)      (by definition of add)
-                 = succ m                     (by the induction hypothesis)
--/
-
-/-
   Exercise: Complete the following proofs using induction (on m).
 -/
 
 /-- For all `m n : Nat`, `m + (n + 1) = (m + n) + 1`-/
-theorem add_succ (m n : Nat) : add m (succ n) = succ (add m n) := sorry
+theorem add_succ (m n : Nat) : m + (succ n) = succ (m + n) := sorry
 
 /--For all `m, n : Nat`, `(m + n) + k = m + (n + k)` -/
 theorem add_assoc (m n k : Nat) : m + n + k = m + (n + k) := sorry
 
 /-- For all `m,n : Nat`, `m + n = n + m` -/
-theorem add_comm (m n : Nat) : add m n = add n m := sorry
+theorem add_comm (m n : Nat) : m + n = n + m := sorry
 
 end Nat
 end hidden
