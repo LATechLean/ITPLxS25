@@ -101,6 +101,20 @@ variable (a_nle_b : ¬(a ≤ b))
 
 end LinearOrders
 
+/-
+  One way to define what it means to be sorted is to make the definition inductive.
+  If you pursue this route, there should be three cases.
+    · The `nil` list is trivially sorted.
+    · The singleton list `[a]` is trivially sorted.
+    · Given a ≤ a' and sorted (cons a' as), (cons a (cons a' as)) is also sorted.
+-/
+/-- A list is sorted if each element is less than or equal to the next -/
+inductive sorted {α : Type u} [LinearOrder α] : List α → Prop
+  | nil : sorted nil
+  | singleton (a : α) : sorted (cons a nil)
+  | cons (a b : α) (as : List α) (a_le_b : a ≤ b) (h_sorted : sorted (cons b as)) :
+     sorted (cons a (cons b as))
+
 /-- Inserts a value into a sorted list, preserving order -/
 def insert {α : Type u} [LinearOrder α] (x : α) (as : List α): List α := sorry
 
@@ -116,20 +130,6 @@ lemma insert_cons_nle {α : Type u} [LinearOrder α] (x a : α) (as : List α) (
 
 /-- Sorts a list using insertion sort -/
 def insertionSort {α : Type u} [LinearOrder α] (as : List α) : List α := sorry
-
-/-
-  One way to define what it means to be sorted is to make the definition inductive.
-  If you pursue this route, there should be three cases.
-    · The `nil` list is trivially sorted.
-    · The singleton list `[a]` is trivially sorted.
-    · Given a ≤ a' and sorted (cons a' as), (cons a (cons a' as)) is also sorted.
--/
-/-- A list is sorted if each element is less than or equal to the next -/
-inductive sorted {α : Type u} [LinearOrder α] : List α → Prop
-  | nil : sorted nil
-  | singleton (a : α) : sorted (cons a nil)
-  | cons (a b : α) (as : List α) (a_le_b : a ≤ b) (h_sorted : sorted (cons b as)) :
-     sorted (cons a (cons b as))
 
 /-
   When working with `if … then … else …`, you might find it helpful to use the `split` tactic:
