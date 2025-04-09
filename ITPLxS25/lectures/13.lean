@@ -303,12 +303,6 @@ example : (⋂ p ∈ primes, { x | ¬p ∣ x }) ⊆ { x | x = 1 } := by
 example : (⋃ p ∈ primes, { x | x ≤ p }) = univ := by
   sorry
 
-end
-
-section
-
-open Set
-
 variable {α : Type*} (s : Set (Set α))
 
 example : ⋃₀ s = ⋃ t ∈ s, t := by
