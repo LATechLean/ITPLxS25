@@ -27,9 +27,9 @@ structure Point2' (α : Type u) where
 -/
 
 structure Point3 (α : Type u) where
-  mk :: x : α
-        y : α
-        z : α
+  x : α
+  y : α
+  z : α
 
 
 /-
@@ -81,14 +81,14 @@ def smul (n : Nat) (p : Point3 Nat) :=
     { (field-name := expr)* }
   Here, the * indicates that the pattern can be repeated as necessary.
 -/
-#check {x := 1, y := 2, z := 3 : Point3 Nat}
+#check {x := 1, y := 2, z := 3 : Point3 _}
 def r := {z := 3, x := 1, y := 2 : Point3 Nat}
 def s : Point3 Nat := {y := 2, z := 3, x := 1}
 
 /-
   Lean is pretty smart: if you miss something, it can tell you what you missed.
 -/
-#check {x := 1, y := 2 : Point3 _}
+#check {x := 1, y := 2 ,z := 7: Point3 _}
 
 end Point3
 
@@ -152,8 +152,8 @@ structure Add₀ (a : Type) where
 def double₀ {a : Type} (s : Add₀ a) (x : a) : a :=
   s.add x x
 
-#eval double₀ {add := Nat.add} (2 : Nat)
-#eval double₀ {add := Int.add} (2 : Int)
+#eval double₀ {add := Nat.add} (54543 : Nat)
+#eval double₀ {add := Int.add} (-27656534542 : Int)
 #eval double₀ {add := Rat.add} (3/2 : Rat)
 /-
   The reals are defined as the completion of the rationals, so the output i
@@ -230,86 +230,88 @@ instance : Inhabited Nat where
 instance : Inhabited Bool where
   default := false
 
-#eval (Inhabited.default : Nat)
-#eval (Inhabited.default : Bool)
-
-section Groups
-
-/-
-  Type classes are particularly useful for definining algebraic structures.
-  As a particular example, we will use type classes to define what it means
-  to be a group, and then prove that some familiar objects are groups.
-
-  In mathematics, one typically defines a group to be a set, G, with extra
-  structure afforded by a binary operation, * : G × G → G that is
-    · Associative: ∀ x, y, z ∈ G, (x * y) * z = x * (y * z)
-    · Has an Identity: ∃ e ∈ G, ∀ x ∈ G, e * x = x and x * e = x
-    · Has Inverses: ∀ x ∈ G, ∃ x⁻¹ ∈ G, x⁻¹ * x = e.
-
-  The integers equipped with addition are the prototypical example.
-    · Addition is associative,
-    · The additive identity is 0, and
-    · The inverse of an integer n is the integer -n.
-
-  We can encode this structure as follows.
--/
-
-class Group (α : Type*) where
-  mul : α → α → α
-  one : α
-  inv : α → α
-  mul_assoc : ∀ x y z : α, mul (mul x y) z = mul x (mul y z)
-  mul_one : ∀ x : α, mul x one = x
-  one_mul : ∀ x : α, mul one x = x
-  inv_mul_cancel : ∀ x : α, mul (inv x) x = one
-
-
-/-
-  We can prove that the integers are a group by declaring them as an instance.
--/
-
-instance : Group Int where
-  mul := Int.add
-  one := (0 : ℤ)
-  inv := λ x : ℤ  ↦ -x
-  mul_assoc := Int.add_assoc
-  mul_one := Int.add_zero
-  one_mul := Int.zero_add
-  inv_mul_cancel := Int.add_left_neg
-
-/-
-  Type classes provide a mechanism to chain instances, allowing us to
-  construct more elaborate instances.
--/
-
-instance {a b : Type*} [G : Group a] [H : Group b] : Group (a × b) where
-  mul := sorry
-  one := sorry
-  inv := sorry
-  mul_assoc := sorry
-  mul_one := sorry
-  one_mul := sorry
-  inv_mul_cancel := sorry
-
-/-
-  Challenge:
--/
-
-variable {G : Type*} [Group G]
-
-theorem mul_inv_cancel (a : G) : Group.mul a  (Group.inv a) = Group.one := by
-  sorry
-
-theorem mul_one (a : G) : Group.mul a Group.one = a := by
-  sorry
-
-theorem mul_inv_rev (a b : G) : Group.inv (Group.mul a b) = Group.mul (Group.inv b) (Group.inv a) := by
-  sorry
-
-end Groups
 
 end Type_Classes
 
+section Example
+
+inductive Animal
+| cat
+| dog
+| cow
+| horse
+| peacock
+
+/-
+  The `Repr` class is used to tell Lean how to print. In its
+  simplest form, you just need to supply a string.  Here is
+  the actual definition from Repr.lean:
+
+  class Repr (α : Type u) where
+    reprPrec : α → Nat → Format
+
+  If our animal speaks, it seems reasonable that it should
+  have a pretty-print interface.
+-/
+
+class Speaks (α : Type) extends Repr α where
+  Says : α → String
+
+class HasTail (α : Type) where
+  action : α → String
+
+namespace Animal
+
+instance : Repr Animal where
+reprPrec a _ := match a with
+    | cat => "cat"
+    | dog => "dog"
+    | cow => "cow"
+    | horse => "horse"
+    | peacock => "peacock"
+
+instance : Speaks Animal where
+  Says
+  | cat => "The " ++ reprStr cat ++ " says meow"
+  | dog => "The " ++ reprStr dog ++ " says woof"
+  | cow => "The " ++ reprStr cow ++ " says moo"
+  | horse => "The " ++ reprStr horse ++ " says neigh"
+  | peacock => "The " ++ reprStr peacock ++ " says honk"
+
+#eval Speaks.Says Animal.cat
+#eval Speaks.Says Animal.dog
+#eval Speaks.Says Animal.cow
+#eval Speaks.Says Animal.horse
+#eval Speaks.Says Animal.peacock
+
+instance : HasTail Animal where
+action
+| cat => "flicks"
+| dog => "wags"
+| cow => "swishes"
+| horse => "swishes"
+| peacock => "fans"
+end Animal
+
+def fullBehaviorExplicit {α : Type} (s : Speaks α) (t : HasTail α) (x : α) : String :=
+  s.Says x ++ ", and its tail " ++ t.action x
+
+#eval fullBehaviorExplicit Animal.instSpeaks Animal.instHasTail Animal.cat
+#eval fullBehaviorExplicit Animal.instSpeaks Animal.instHasTail Animal.dog
+#eval fullBehaviorExplicit Animal.instSpeaks Animal.instHasTail Animal.cow
+#eval fullBehaviorExplicit Animal.instSpeaks Animal.instHasTail Animal.horse
+#eval fullBehaviorExplicit Animal.instSpeaks Animal.instHasTail Animal.peacock
+
+def fullBehavior {α : Type} [Repr α] [HasTail α] [Speaks α] (x : α) : String :=
+  Speaks.Says x ++ ", and its tail " ++ HasTail.action x
+
+#eval fullBehavior Animal.cat
+#eval fullBehavior Animal.dog
+#eval fullBehavior Animal.cow
+#eval fullBehavior Animal.horse
+#eval fullBehavior Animal.peacock
+
+end Example
 end hidden
 
 end Lecture_12
