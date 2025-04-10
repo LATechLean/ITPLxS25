@@ -282,38 +282,5 @@ example : (⋂ i, A i ∩ B i) = (⋂ i, A i) ∩ ⋂ i, B i := by
 example : (s ∪ ⋂ i, A i) = ⋂ i, A i ∪ s := by
   sorry
 
-def primes : Set ℕ :=
-  { x | Nat.Prime x }
-
-example : (⋃ p ∈ primes, { x | p ^ 2 ∣ x }) = { x | ∃ p ∈ primes, p ^ 2 ∣ x } :=by
-  ext
-  rw [mem_iUnion₂]
-  simp
-
-example : (⋃ p ∈ primes, { x | p ^ 2 ∣ x }) = { x | ∃ p ∈ primes, p ^ 2 ∣ x } := by
-  ext
-  simp
-
-example : (⋂ p ∈ primes, { x | ¬p ∣ x }) ⊆ { x | x = 1 } := by
-  intro x
-  contrapose!
-  simp
-  apply Nat.exists_prime_and_dvd
-
-example : (⋃ p ∈ primes, { x | x ≤ p }) = univ := by
-  sorry
-
-variable {α : Type*} (s : Set (Set α))
-
-example : ⋃₀ s = ⋃ t ∈ s, t := by
-  ext x
-  rw [mem_iUnion₂]
-  simp
-
-example : ⋂₀ s = ⋂ t ∈ s, t := by
-  ext x
-  rw [mem_iInter₂]
-  rfl
-
 end Indexed_Sets
 end Lecture_13
