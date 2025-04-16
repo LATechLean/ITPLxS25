@@ -210,8 +210,20 @@ variable (f : α → β)
 
 open Function
 
-example : Injective f ↔ LeftInverse (inverse f) f :=
-  sorry
+example : Injective f ↔ LeftInverse (inverse f) f := by
+  constructor
+  · intro injf
+    intro a
+    have h : ∃ x, f x = f a := ⟨a,rfl⟩
+    rw[inverse,dif_pos h]
+    apply injf
+    exact choose_spec h
+  · intro h
+    intro x₁ x₂ fx₁_eq_fx₂
+    calc
+      x₁ = inverse f (f x₁) := by rw [h x₁]
+        _ = inverse f (f x₂) := by rw[fx₁_eq_fx₂]
+        _ = x₂ := by rw[h x₂]
 
 example : Surjective f ↔ RightInverse (inverse f) f :=
   sorry
