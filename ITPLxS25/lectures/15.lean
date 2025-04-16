@@ -30,14 +30,12 @@ variable (u v : Set β)
     · surjective.
 -/
 example (h : Injective f) : f ⁻¹' (f '' s) ⊆ s := by
-  simp only [preimage,image,]
   sorry
 
 example : f '' (f ⁻¹' u) ⊆ u := by
   sorry
 
 example (h : Surjective f) : u ⊆ f '' (f ⁻¹' u) := by
-
   sorry
 
 example (h : s ⊆ t) : f '' s ⊆ f '' t := by
@@ -122,20 +120,55 @@ example : range exp = { y | y > 0 } := by
   rw [exp_log ypos]
 
 example : InjOn sqrt { x | x ≥ 0 } := by
-  sorry
+  intro x₁ x₁_nonneg x₂ x₂_nonneg h
+  rw[mem_setOf] at x₁_nonneg
+  rw [mem_setOf] at x₂_nonneg
+  calc
+    x₁ = √x₁ * √x₁ := by exact Eq.symm (mul_self_sqrt x₁_nonneg)
+    _ = √x₂ * √x₂ := by rw[h]
+    _= x₂ := by exact mul_self_sqrt x₂_nonneg
 
 example : InjOn (fun x ↦ x ^ 2) { x : ℝ | x ≥ 0 } := by
-  sorry
+  intro x₁ x₁_nonneg x₂ x₂_nonneg h
+  dsimp at h
+  calc
+    x₁ = |x₁| := Eq.symm (abs_of_nonneg x₁_nonneg)
+    _ = √(x₁^2) := Eq.symm (sqrt_sq_eq_abs x₁)
+    _ = √(x₂^2) := by rw [h]
+    _ = |x₂| := (sqrt_sq_eq_abs x₂)
+    _ = x₂ := abs_of_nonneg x₂_nonneg
 
 example : sqrt '' { x | x ≥ 0 } = { y | y ≥ 0 } := by
-  sorry
+  apply Subset.antisymm
+  case h₁ =>
+    intro y ⟨x,x_nonneg,fx_eq_y⟩
+    simp
+    rw [← fx_eq_y]
+    exact sqrt_nonneg x
+  case h₂ =>
+    intro x
+    dsimp
+    intro x_nonneg
+    -- Since 0 ≤ x, x = √(x^2).
+    exact ⟨x^2, sq_nonneg x, sqrt_sq x_nonneg⟩
 
 example : (range fun x ↦ x ^ 2) = { y : ℝ | y ≥ 0 } := by
-  sorry
+  apply Subset.antisymm
+  case h₁ =>
+    intro y
+    simp
+    intro x fx_eq_y
+    rw [← fx_eq_y]
+    exact sq_nonneg x
+  case h₂ =>
+    intro y
+    simp
+    intro y_nonneg
+    exact ⟨√y, sq_sqrt y_nonneg⟩
 end InjOn
 
 section Choice
-
+open Classical
 /-
   Lean provides a mechanism for the usual mathematical operation of
   "Let x be a … ".  This is very much not constructive, so Lean requires
@@ -147,14 +180,20 @@ variable {α β : Type*} [Inhabited α]
 
 variable (P : α → Prop) (h : ∃ x, P x)
 
-#check Classical.choose h
+/-
+  Classical.choose is used to produce an element from an existential
+  statement like `∃ x, P x`.
+-/
+#check choose h
 
-example : P (Classical.choose h) :=
-  Classical.choose_spec h
+/-
+  Classical.choose_spec is proves that the chosen element meets the specification.
+  In this particular case, the term `choose h` satisfies the predicate `P`.
+-/
+
+example : P (choose h) := choose_spec h
 
 noncomputable section
-
-open Classical
 
 def inverse (f : α → β) : β → α := fun y : β ↦
   if h : ∃ x, f x = y then Classical.choose h else default
