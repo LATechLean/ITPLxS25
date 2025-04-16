@@ -115,6 +115,13 @@ example : f '' s ⊆ v ↔ s ⊆ f ⁻¹' v := by
 end Functions
 
 section Injective_and_Surjective
+open Function
+open Set
+
+variable {α β : Type*}
+variable (f : α → β)
+variable (s t : Set α)
+variable (u v : Set β)
 /-
   Lean also provides notions of injectivity and surjectivity.
   Recall that f : s → t is injective if
@@ -194,6 +201,8 @@ example : (f ⁻¹' ⋂ i, B i) = ⋂ i, f ⁻¹' B i := by
 end Injective_and_Surjective
 
 section InjOn
+open Set
+open Function
 
 /-
   Lean also provides a predicate called InjOn to indicate that f is
