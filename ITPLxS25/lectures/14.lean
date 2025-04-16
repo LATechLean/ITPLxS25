@@ -84,7 +84,7 @@ example : finiteFunction '' {a,b,c} = {d} := by
     · rintro ⟨x, hx ,hfx⟩
       rw[← hfx]
       cases x <;> trivial
-    · rintro hy
+    · intro hy
       rw[mem_singleton_iff] at hy
       rw[hy]
       use a
@@ -100,12 +100,33 @@ end hidden
     · preimage,
     · mem_setOf,
 -/
+--theorem mem_setOf {a : α} {p : α → Prop} : a ∈ { x | p x } ↔ p a
 
 example : f ⁻¹' (u ∩ v) = f ⁻¹' u ∩ f ⁻¹' v := by
-  sorry
+  apply Subset.antisymm
+  · intro x
+    simp only [preimage,mem_setOf,mem_inter_iff]
+    intro
+    assumption
+    /- rw[preimage,mem_setOf,mem_inter_iff]
+    rintro ⟨hxu,hxv⟩
+    rw[preimage,preimage,mem_inter_iff,mem_setOf,mem_setOf]
+    constructor <;> assumption -/
+  · intro x
+    simp only [preimage,mem_setOf,mem_inter_iff]
+    intro
+    assumption
 
 example : f '' (s ∪ t) = f '' s ∪ f '' t := by
-  sorry
+  ext y
+  simp only [image,mem_setOf,mem_union]
+  constructor
+  · rintro ⟨x,(hxs | hxt),hfx⟩
+    · left
+      use x
+    · right
+      use x
+  . sorry
 
 example : s ⊆ f ⁻¹' (f '' s) := by
   sorry
@@ -113,6 +134,5 @@ example : s ⊆ f ⁻¹' (f '' s) := by
 example : f '' s ⊆ v ↔ s ⊆ f ⁻¹' v := by
   sorry
 end Functions
-
 
 end Lecture_14
