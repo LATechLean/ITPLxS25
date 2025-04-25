@@ -68,24 +68,31 @@ def comp {α β γ : Type u} (g : β → γ) (f : α → β) : α → γ :=
   λ a : α ↦ g (f a)
 
 /-
-  Composition of functions is an associative binary operation.
+  Registering composition as an instance of `HMul` (heterogeneous multiplication)
+  provides notation:
+    If `g : β → γ` and `f : α → β`, then `g * f := comp g f`.
+-/
+instance {α β γ : Type u} : HMul (β → γ) (α → β) (α → γ) where
+hMul:= comp
+
+/-
+  Composition of functions is associative.
 -/
 theorem comp_assoc {α β γ δ : Type u} (h : γ → δ) (g : β → γ) (f : α → β) :
-  comp h (comp g f) = comp (comp h g) f := rfl
+  h * (g * f) = (h*g)*f := rfl
 
 /-
   Note that composition requires the codomain of `f` and the domain of `g` to
   be the same type, so composition isn't a well-defined binary operation for
   functions in general.
   However, if we restrict to just functions `α → α`, we can prove that composition
-  is a well-defined operation.
+  is a well-defined binary operation on this type.
 -/
-
 instance {α : Type u} : Mul (α → α) where
   mul := comp
 
 /-
-  Registering as an instance of `Mul` now provides access to the infix operator `*`
+  Registering as an instance of `Mul` also provides access to the infix operator `*`
   as a shorthand for composition.
 -/
 
@@ -125,8 +132,8 @@ instance {α : Type u} : MulOneClass (α → α) where
   This allows us to use `1` as a standin for the function identity function
   `λ a : α ↦ a`.
 -/
-#eval ((λ s : String ↦ s ++ " blah") * 1) "Whee"
-#eval (1 * (λ s : String ↦ s ++ " blah")) "Whee"
+#eval ((λ s : String ↦ s ++ " bar") * 1) "foo"
+#eval (1 * (λ s : String ↦ s ++ " bar")) "foo"
 
 /-
   Since we're thinking of our operation as multiplication, we want a shorthand
