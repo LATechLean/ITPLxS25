@@ -261,7 +261,7 @@ instance : Add X where
   combinator `<;>` to produce all 64 cases and close each one with `rfl`.
 -/
 theorem add_assoc (x y z : X) : (x + y) + z = x + (y + z):= by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 /-
   We can also prove this addition is commutative.  Again, we would need to
@@ -270,7 +270,7 @@ theorem add_assoc (x y z : X) : (x + y) + z = x + (y + z):= by
 -/
 
 theorem add_comm (x y : X) : x + y = y + x := by
-  cases x <;> cases y <;> rfl
+  sorry
 
 /-
   We can also register that this operation has an identity.  Since the operation
@@ -291,10 +291,10 @@ instance : Zero X where
   We can prove that `e = 0` by expanding the cases and then applying `rfl`.
 -/
 theorem zero_add (x : X) : e + x = x := by
-  cases x <;> rfl
+  sorry
 
 theorem add_zero (x : X) : x + e = x := by
-  cases x <;> rfl
+  sorry
 
 instance : AddZeroClass X where
 zero_add := zero_add
@@ -344,10 +344,10 @@ neg x := match x with
   It's often convenient to prove that the negation behaves as expected.
 -/
 theorem add_neg_cancel (x : X) : x + -x = 0 := by
-  cases x <;> rfl
+  sorry
 
 theorem neg_add_cancel (x : X) : -x + x = 0 := by
-  cases x <;> rfl
+  sorry
 
 /-
   Of course, it seems silly to write x + -x.  It would be much more
@@ -429,10 +429,12 @@ hSMul := zsmul
   We can prove scalar multiplication by ℤ behaves as expected:
 -/
 
-theorem zsmul_zero (x : X) : 0 • x = 0 := rfl
-theorem zsmul_succ (n : ℕ) (x : X) : (n+1) • x =  (n • x) + x := by
-  cases x <;> rfl
-theorem zsmul_neg (n : ℕ) (x : X) :  (Int.negSucc n) • x = - ((n+1) • x) := rfl
+theorem zsmul_zero (x : X) : 0 • x = 0 :=
+  sorry
+theorem zsmul_succ (n : ℕ) (x : X) : (n+1) • x =  (n • x) + x :=
+  sorry
+theorem zsmul_neg (n : ℕ) (x : X) :  (Int.negSucc n) • x = - ((n+1) • x) :=
+  sorry
 
 end X
 
@@ -622,16 +624,16 @@ instance : Mul U where
   mul := mul
 
 theorem mul_assoc (x y z : U) : (x * y) * z = x * (y * z) := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 instance : One U where
 one := one
 
 theorem one_mul (x : U) : 1 * x = x := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_one (x : U) : x * 1 = x := by
-  cases x <;> rfl
+  sorry
 
 instance : Inv U where
   inv
@@ -641,10 +643,10 @@ instance : Inv U where
   | neg_i => i
 
 theorem inv_mul_cancel (x : U) : x⁻¹ * x = 1 := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_inv_cancel (x : U) : x * x⁻¹ = 1 := by
-  cases x <;> rfl
+  sorry
 
 instance : Group U where
 mul := mul
@@ -702,16 +704,16 @@ instance : Mul X where
 mul := mul
 
 theorem mul_assoc (x y z : X) : (x * y) * z = x * (y * z) := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 instance : One X where
 one := a
 
 theorem one_mul (x : X) : 1 * x = x := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_one (x : X) : x * 1 = x := by
-  cases x <;> rfl
+  sorry
 
 instance : Monoid X where
 mul := mul
@@ -724,7 +726,7 @@ mul_one := mul_one
   This makes X a CommMonoid under *.
 -/
 theorem mul_comm (x y : X) : x * y = y * x := by
-  cases x <;> cases y <;> rfl
+  sorry
 
 instance : CommMonoid X where
 mul_comm := mul_comm
@@ -733,19 +735,19 @@ mul_comm := mul_comm
   We would like to know that `0` behaves as we expect: `0 * x = 0 = x * 0`.
 -/
 theorem zero_mul (x : X) : 0 * x = 0 := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_zero (x : X) : x * 0 = 0 := by
-  cases x <;> rfl
+  sorry
 
 /-
   Finally we prove the compatibility.
 -/
 theorem left_distrib (x y z : X) : x * (y + z) = x*y + x*z := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 theorem right_distrib (x y z : X) : (x + y) * z = x*z + y*z := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 /-
   This is everything we need to establish that `(X, +, *)` is a ring.
@@ -807,7 +809,7 @@ section Fields
 
 namespace X
 def unit_a : Units X := {val := a, inv := a, val_inv := rfl, inv_val := rfl}
-def unit_c : Units X := {val := c, inv := c, val_inv := rfl, inv_val := rfl}
+def unit_c : Units X := sorry
 
 /-
   The shorthand for the units in a Monoid, `M`, is `Mˣ`.
@@ -854,17 +856,11 @@ example : IsUnit c := ⟨unit_c,rfl⟩
 -/
 
 example : ¬IsUnit b := by
-  intro ⟨u, h_u⟩
-  have inv_b : b*u.inv = 1 := by
-    rw[← h_u]
-    exact u.val_inv
-  have absurd : b = 0 :=
-    calc
-       b = b*1 := by rw[mul_one]
-       _= b*(b*u.inv) := by rw [← inv_b]
-       _= (b*b)*u.inv := by rw[mul_assoc]
-       _= 0*u.inv := rfl
-       _= 0 := by rw[zero_mul]
+  rintro ⟨u, h_u⟩
+  have b_inv : b*u.inv = 1 := by
+    sorry
+  have absurd : b = 0 := by
+    sorry
   contradiction
 end X
 
@@ -924,10 +920,10 @@ instance : Zero 𝔽₂ where
 zero := zero
 
 theorem neg_add_cancel (x : 𝔽₂) : -x + x = 0 := by
-  cases x <;> rfl
+  sorry
 
 theorem add_neg_cancel (x : 𝔽₂) : x + -x = 0 := by
-  cases x <;> rfl
+  sorry
 
 -- Provides notation : x - y
 instance : Sub 𝔽₂ where
@@ -939,26 +935,25 @@ sub x y := x + -y
 -/
 
 theorem neg_is_trivial (x : 𝔽₂) : x = -x := by
-  cases x <;> rfl
+  sorry
 
-theorem sub_eq_add_neg (x y : 𝔽₂) : x - y = x + -y := rfl
+theorem sub_eq_add_neg (x y : 𝔽₂) : x - y = x + -y :=
+  sorry
 
 theorem add_is_sub (x y : 𝔽₂) : x + y = x - y := by
-  calc
-    x + y = x + -y := by rw[← neg_is_trivial y]
-    _= x - y := by rw[sub_eq_add_neg]
+  sorry
 
 def zero_add (x : 𝔽₂) : 0 + x = x := by
-  cases x <;> rfl
+  sorry
 
 def add_zero (x : 𝔽₂) : x + 0 = x := by
-  cases x <;> rfl
+  sorry
 
 theorem add_assoc (x y z : 𝔽₂) : (x + y) + z = x + (y + z) := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 def add_comm (x y : 𝔽₂) : x + y = y + x := by
-  cases x <;> cases y <;> rfl
+  sorry
 
 def nsmul : ℕ → 𝔽₂ → 𝔽₂
 | 0, _ => 0
@@ -969,7 +964,7 @@ instance : HSMul ℕ 𝔽₂ 𝔽₂ where
 hSMul := nsmul
 
 def zsmul : ℤ → 𝔽₂ → 𝔽₂
-| Int.ofNat n, x =>  n • x           -- Non-negative case
+| Int.ofNat n, x =>  n • x                 -- Non-negative case
 | Int.negSucc n, x => -((Nat.succ n) • x)  -- Negative case.
 
 -- Provides notation : z • x
@@ -986,7 +981,6 @@ instance : AddCommGroup 𝔽₂ where
   neg_add_cancel := neg_add_cancel
   add_comm := add_comm
 
-
 def mul : 𝔽₂ → 𝔽₂ → 𝔽₂
 | zero, zero => zero
 | zero, one => zero
@@ -1002,32 +996,32 @@ instance : One 𝔽₂ where
 one := one
 
 theorem mul_one (x : 𝔽₂) : x * 1 = x := by
-  cases x <;> rfl
+  sorry
 
 theorem one_mul (x : 𝔽₂) : 1 * x = x := by
-  cases x <;> rfl
+  sorry
 
 instance : MulOneClass 𝔽₂ where
 one_mul := one_mul
 mul_one := mul_one
 
 theorem mul_zero (x : 𝔽₂) : x * 0 = 0 := by
-  cases x <;> rfl
+  sorry
 
 theorem zero_mul (x : 𝔽₂) : 0 * x = 0 := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_assoc (x y z : 𝔽₂) : (x * y) * z = x * (y * z) := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 theorem mul_comm (x y : 𝔽₂) : x * y = y * x := by
-  cases x <;> cases y <;> rfl
+  sorry
 
 theorem left_distrib (x y z : 𝔽₂) : x * (y + z) = x*y + x*z := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 theorem right_distrib (x y z : 𝔽₂) : (x + y) * z = x*z + y*z := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 instance : CommRing 𝔽₂ where
   mul_assoc := mul_assoc
@@ -1050,12 +1044,10 @@ instance : Inv 𝔽₂ where
 inv := inv
 
 theorem mul_inv_cancel (x : 𝔽₂) (h : x ≠ 0): x * x⁻¹ = 1 := by
-  cases x <;> first | rfl | contradiction
+  sorry
 
 theorem exists_pair_ne : ∃ x y : 𝔽₂, x ≠ y := by
-  use 0, 1
-  intro h
-  contradiction
+  sorry
 
 instance : Field 𝔽₂ where
   inv := inv
