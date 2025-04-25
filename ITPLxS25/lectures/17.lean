@@ -121,8 +121,8 @@ one := λ a : α ↦ a
   protected mul_one : ∀ a : M, a * 1 = a
 -/
 
-theorem id_comp {α : Type u} (f : α → α) :  (λ a : α ↦ a) * f = f := rfl
-theorem comp_id {α : Type u} (f : α → α) : f * (λ a : α ↦ a) = f := rfl
+theorem id_comp {α : Type u} (f : α → α) :  1 * f = f := rfl
+theorem comp_id {α : Type u} (f : α → α) : f * 1 = f := rfl
 
 instance {α : Type u} : MulOneClass (α → α) where
   mul_one := id_comp
@@ -151,7 +151,7 @@ instance {α : Type u} : MulOneClass (α → α) where
 /-- The `n`-fold composition of `f : α → α` with itself.-/
 def npow_comp {α : Type u} : ℕ → (α → α) → (α → α) :=
   λ (n : ℕ) (f : α → α) ↦ match n with
-  | Nat.zero => λ a : α ↦ a
+  | Nat.zero => 1
   | Nat.succ n => λ a : α ↦ ((npow_comp n f) * f) a
 
 #eval (npow_comp 0 λ n ↦ 2*n) 3 -- 3
@@ -376,7 +376,7 @@ instance : Sub X where
 -/
 def nsmul (n : ℕ) (x : X): X := by
   match n with
-  | 0 => exact e
+  | 0 => exact 0
   | n+1 => exact (nsmul n x) + x
 
 /-
