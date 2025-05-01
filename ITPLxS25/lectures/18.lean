@@ -19,9 +19,7 @@ section Groups
 
 namespace X
 instance : AddGroup X where
-neg_add_cancel := by
-  intro x
-  cases x <;> rfl
+neg_add_cancel := sorry
 
 /-
   In fact, more is true: we've already proven that `X` is actually an abelian group
@@ -31,7 +29,7 @@ neg_add_cancel := by
 -/
 
 instance : AddCommGroup X where
-add_comm := X.add_comm
+add_comm := sorry
 
 end X
 
@@ -75,16 +73,16 @@ instance : Mul U where
   mul := mul
 
 theorem mul_assoc (x y z : U) : (x * y) * z = x * (y * z) := by
-  cases x <;> cases y <;> cases z <;> rfl
+  sorry
 
 instance : One U where
 one := one
 
 theorem one_mul (x : U) : 1 * x = x := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_one (x : U) : x * 1 = x := by
-  cases x <;> rfl
+  sorry
 
 instance : Inv U where
   inv
@@ -94,10 +92,10 @@ instance : Inv U where
   | neg_i => i
 
 theorem inv_mul_cancel (x : U) : x⁻¹ * x = 1 := by
-  cases x <;> rfl
+  sorry
 
 theorem mul_inv_cancel (x : U) : x * x⁻¹ = 1 := by
-  cases x <;> rfl
+  sorry
 
 instance : Group U where
 mul := mul
@@ -107,9 +105,7 @@ mul_one := mul_one
 inv_mul_cancel := inv_mul_cancel
 
 instance : CommGroup U where
-  mul_comm := by
-    intro x y
-    cases x <;> cases y <;> rfl
+  mul_comm := sorry
 
 end U
 
