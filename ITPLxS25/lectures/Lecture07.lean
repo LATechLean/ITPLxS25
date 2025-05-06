@@ -1,4 +1,4 @@
-import ITPLxS25.lectures.«06»
+import ITPLxS25.lectures.Lecture06
 open Lecture_05
 open Lecture_06
 

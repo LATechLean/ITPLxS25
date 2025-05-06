@@ -1,3 +1,4 @@
+import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Complex.Basic

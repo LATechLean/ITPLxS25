@@ -183,7 +183,8 @@ def double {a : Type} [Add a] (x : a) : a :=
   This his doesn't magically allow us to start applying double to things
   with addition.
 -/
-#check double 2
+
+--#check double 2 -- This fails because Lean doesn't know `ℕ` is an instance of Add.
 
 /-
   Instead, we have to register a type as an instance of Add by providing the

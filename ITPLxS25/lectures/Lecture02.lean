@@ -151,8 +151,8 @@ section Local_Definitions
   Note that unlike the def keyword, the definition is out of scope immediately.
 -/
 
-#check x
-#check y
+-- #check x
+-- #check y
 /-
   We can use this in definitions.
 -/
@@ -204,9 +204,9 @@ variable (α β γ : Type)
 variable (g : β → γ) (f : α → β) (h : α → α)
 variable (x : α)
 
-def compose₃  := sorry
-def doTwice₃  := sorry
-def doThrice₃ := sorry
+-- def compose₃  := sorry
+-- def doTwice₃  := sorry
+-- def doThrice₃ := sorry
 
 /-
   We can actually see these are definitionally equal using #print.
@@ -218,11 +218,11 @@ def doThrice₃ := sorry
 
 #print doTwice
 #print doTwice₂
-#print doTwice₃
+-- #print doTwice₃
 
 #print doThrice
 #print doThrice₂
-#print doThrice₃
+-- #print doThrice₃
 
 /-
   Sometimes, we don't want these variables to persist beyond the definitions.
@@ -235,7 +235,7 @@ section -- Anonymous section
   #check T
 end
 
-#check T -- This fails because the name T is destroyed at the end of the section.
+-- #check T -- This fails because the name T is destroyed at the end of the section.
 
 section useful
   variable (S T U : Type)
@@ -249,9 +249,9 @@ end useful
   Note that while the names from variable do not persist beyond the section, the names
   from def do persist!  Moreover, the same names persist internal to the functions.
 -/
-#check S
-#check T
-#check U
+-- #check S
+-- #check T
+-- #check U
 #check compose₄
 #print compose₄
 end Variables_and_Sections
@@ -262,7 +262,6 @@ section Namespaces
   Namespaces are similar to sections.  Unlike a section, all definitions are internal to the
   namespace.  However, we can access elements of a namespace using fully qualified names.
 -/
-namespace Namespaces
 
 namespace Foo
   def a : ℕ := 5
@@ -285,8 +284,8 @@ end Foo
 /-
   Outside the namespace, we must use the fully qualified name.
 -/
-#check a          -- Fails; outside namespace.
-#check add_seven  -- Fails; outside namespace.
+-- #check a          -- Fails; outside namespace.
+-- #check add_seven  -- Fails; outside namespace.
 
 #check Foo.a
 #check Foo.add_seven

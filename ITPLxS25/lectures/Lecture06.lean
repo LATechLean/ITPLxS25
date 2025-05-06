@@ -1,5 +1,5 @@
 import Mathlib
-import ITPLxS25.lectures.«05»
+import ITPLxS25.lectures.Lecture05
 
 namespace Lecture_06
 open Lecture_05

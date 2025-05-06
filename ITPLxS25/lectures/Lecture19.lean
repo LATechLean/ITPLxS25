@@ -1,5 +1,7 @@
-import ITPLxS25.lectures.«17»
-import ITPLxS25.lectures.«18»
+import ITPLxS25.lectures.Lecture17
+import ITPLxS25.lectures.Lecture18
+
+
 namespace Lecture_17
 
 section Rings
@@ -23,6 +25,7 @@ section Rings
   b || e | b | e | b |
   c || e | c | b | a |
 -/
+
 namespace X
 
 def mul : X → X → X
@@ -46,17 +49,21 @@ def mul : X → X → X
 instance : Mul X where
 mul := mul
 
+
 theorem mul_assoc (x y z : X) : (x * y) * z = x * (y * z) := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 instance : One X where
 one := a
 
+#eval b * 1
+#eval b*a
+
 theorem one_mul (x : X) : 1 * x = x := by
-  sorry
+  cases x <;> rfl
 
 theorem mul_one (x : X) : x * 1 = x := by
-  sorry
+  cases x <;> rfl
 
 instance : Monoid X where
 mul := mul
@@ -69,7 +76,7 @@ mul_one := mul_one
   This makes X a CommMonoid under *.
 -/
 theorem mul_comm (x y : X) : x * y = y * x := by
-  sorry
+  cases x <;> cases y <;> rfl
 
 instance : CommMonoid X where
 mul_comm := mul_comm
@@ -78,19 +85,19 @@ mul_comm := mul_comm
   We would like to know that `0` behaves as we expect: `0 * x = 0 = x * 0`.
 -/
 theorem zero_mul (x : X) : 0 * x = 0 := by
-  sorry
+  cases x <;> rfl
 
 theorem mul_zero (x : X) : x * 0 = 0 := by
-  sorry
+  cases x <;> rfl
 
 /-
   Finally we prove the compatibility.
 -/
 theorem left_distrib (x y z : X) : x * (y + z) = x*y + x*z := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 theorem right_distrib (x y z : X) : (x + y) * z = x*z + y*z := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 /-
   This is everything we need to establish that `(X, +, *)` is a ring.
@@ -152,7 +159,7 @@ section Fields
 
 namespace X
 def unit_a : Units X := {val := a, inv := a, val_inv := rfl, inv_val := rfl}
-def unit_c : Units X := sorry
+def unit_c : Units X := {val := c, inv := c, val_inv := rfl, inv_val := rfl}
 
 /-
   The shorthand for the units in a Monoid, `M`, is `Mˣ`.
@@ -162,7 +169,7 @@ def unit_c : Units X := sorry
 end X
 
 /-
-  Mathlib provides a predicate to determine whether or not an element is a ring.
+  Mathlib provides a predicate to determine whether or not an element is a unit.
 
   def IsUnit [Monoid M] (a : M) : Prop :=
   ∃ u : Mˣ, (u : M) = a
@@ -201,9 +208,15 @@ example : IsUnit c := ⟨unit_c,rfl⟩
 example : ¬IsUnit b := by
   rintro ⟨u, h_u⟩
   have b_inv : b*u.inv = 1 := by
-    sorry
+    rw [← h_u]
+    exact u.val_inv
   have absurd : b = 0 := by
-    sorry
+    calc b = b*1 := by rw[mul_one]
+    _= b*(u*u.inv) := by rw[u.val_inv]
+    _= (b*u)*u.inv := by rw[mul_assoc]
+    _= (b*b)*u.inv := by rw [←h_u]
+    _= 0*u.inv := by rfl
+    _= 0 := by rw[zero_mul]
   contradiction
 end X
 
@@ -223,7 +236,7 @@ mul_comm := mul_comm
 inv_mul_cancel := λ u ↦ inv_mul_cancel u
 
 /-
-  With this in mind, we define a Field to be a ring, F, that satisfies
+  With this in mind, we define a Field to be a non-trivial (`0 ≠ 1`) ring, `F`, that satisfies
     `Fˣ = F \ {0}`.
 -/
 
@@ -263,40 +276,43 @@ instance : Zero 𝔽₂ where
 zero := zero
 
 theorem neg_add_cancel (x : 𝔽₂) : -x + x = 0 := by
-  sorry
+  cases x <;> rfl
 
 theorem add_neg_cancel (x : 𝔽₂) : x + -x = 0 := by
-  sorry
+  cases x <;> rfl
 
+def sub (x y : 𝔽₂) : 𝔽₂ := x + -y
 -- Provides notation : x - y
 instance : Sub 𝔽₂ where
-sub x y := x + -y
+sub := sub
 
+
+#check (𝔽₂.sub : 𝔽₂ → 𝔽₂ → 𝔽₂)
 /-
   A particularly strange property of the field with two elements is that
   addition an subtraction are the same.  This is a consequence of
 -/
 
 theorem neg_is_trivial (x : 𝔽₂) : x = -x := by
-  sorry
+  cases x <;> rfl
 
-theorem sub_eq_add_neg (x y : 𝔽₂) : x - y = x + -y :=
-  sorry
+theorem sub_eq_add_neg (x y : 𝔽₂) : x - y = x + -y := by
+  cases x <;> cases y <;> rfl
 
 theorem add_is_sub (x y : 𝔽₂) : x + y = x - y := by
-  sorry
+  cases x <;> cases y <;> rfl
 
 def zero_add (x : 𝔽₂) : 0 + x = x := by
-  sorry
+  cases x <;> rfl
 
 def add_zero (x : 𝔽₂) : x + 0 = x := by
-  sorry
+  cases x <;> rfl
 
 theorem add_assoc (x y z : 𝔽₂) : (x + y) + z = x + (y + z) := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 def add_comm (x y : 𝔽₂) : x + y = y + x := by
-  sorry
+  cases x <;> cases y <;> rfl
 
 def nsmul : ℕ → 𝔽₂ → 𝔽₂
 | 0, _ => 0
@@ -339,32 +355,32 @@ instance : One 𝔽₂ where
 one := one
 
 theorem mul_one (x : 𝔽₂) : x * 1 = x := by
-  sorry
+  cases x <;> rfl
 
 theorem one_mul (x : 𝔽₂) : 1 * x = x := by
-  sorry
+  cases x <;> rfl
 
 instance : MulOneClass 𝔽₂ where
 one_mul := one_mul
 mul_one := mul_one
 
 theorem mul_zero (x : 𝔽₂) : x * 0 = 0 := by
-  sorry
+  cases x <;> rfl
 
 theorem zero_mul (x : 𝔽₂) : 0 * x = 0 := by
-  sorry
+  cases x <;> rfl
 
 theorem mul_assoc (x y z : 𝔽₂) : (x * y) * z = x * (y * z) := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 theorem mul_comm (x y : 𝔽₂) : x * y = y * x := by
-  sorry
+  cases x <;> cases y <;> rfl
 
 theorem left_distrib (x y z : 𝔽₂) : x * (y + z) = x*y + x*z := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 theorem right_distrib (x y z : 𝔽₂) : (x + y) * z = x*z + y*z := by
-  sorry
+  cases x <;> cases y <;> cases z <;> rfl
 
 instance : CommRing 𝔽₂ where
   mul_assoc := mul_assoc
@@ -386,11 +402,19 @@ def inv : 𝔽₂ → 𝔽₂
 instance : Inv 𝔽₂ where
 inv := inv
 
+#eval zero⁻¹
+#eval one⁻¹
+
 theorem mul_inv_cancel (x : 𝔽₂) (h : x ≠ 0): x * x⁻¹ = 1 := by
-  sorry
+  cases x
+  contradiction
+  rfl
 
 theorem exists_pair_ne : ∃ x y : 𝔽₂, x ≠ y := by
-  sorry
+  use zero
+  use one
+  intro
+  contradiction
 
 instance : Field 𝔽₂ where
   inv := inv
@@ -401,6 +425,6 @@ instance : Field 𝔽₂ where
   qsmul := _
 
 end 𝔽₂
-
---instance Field :
 end Fields
+
+end Lecture_17

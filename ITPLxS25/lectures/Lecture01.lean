@@ -64,9 +64,9 @@ section  Simple_Type_Theory
   is definitionally NOT a natural number.  These types of statements result in errors.
 -/
 
-#check ¬ℕ
-#check -7 : ℕ
-#check ¬(-7 : ℕ)
+--#check ¬ℕ
+--#check -7 : ℕ
+--#check ¬(-7 : ℕ)
 
 
 /-

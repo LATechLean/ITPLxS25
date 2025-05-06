@@ -1,4 +1,4 @@
-import ITPLxS25.lectures.«17»
+import ITPLxS25.lectures.Lecture17
 
 namespace Lecture_17
 
