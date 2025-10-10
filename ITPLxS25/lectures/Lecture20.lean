@@ -6,7 +6,6 @@ import Mathlib.Algebra.Group.Equiv.Defs
 
 namespace Lecture_20
 
-
 section Morphisms_of_Monoids
 
 /-
@@ -45,7 +44,9 @@ section Morphisms_of_Monoids
     protected toFun : M → N
     protected map_add' : ∀ x y, toFun (x + y) = toFun x + toFun y
 
+  →+ instead of →*
 -/
+
 
 #check ZeroHom
 #check AddHom
@@ -104,23 +105,49 @@ variable {G H : Type u} [Group G] [Group H] (a b c: G)
     `1 = (a*a⁻¹)⁻¹ *(a*a⁻¹)`.
 -/
 
-theorem mul_inv_cancel : a*a⁻¹ = 1 :=
-  sorry
+theorem mul_inv_cancel : a*a⁻¹ = 1 := calc
+  a * a⁻¹ = 1 * (a * a⁻¹) := by rw[one_mul]
+  _= ((a*a⁻¹)⁻¹*(a*a⁻¹))*(a*a⁻¹) := by rw[inv_mul_cancel]
+  _= (a*a⁻¹)⁻¹*((a*a⁻¹)*(a*a⁻¹)) := by rw[mul_assoc]
+  _= (a*a⁻¹)⁻¹*((a*(a⁻¹*a)*a⁻¹)) := by repeat rw[mul_assoc]
+  _= (a*a⁻¹)⁻¹*(a*1*a⁻¹) := by rw[inv_mul_cancel]
+  _= (a*a⁻¹)⁻¹*(a*a⁻¹) := by rw[mul_one]
+  _= 1 := by rw[inv_mul_cancel]
 
 /-
   We'll need this to prove the following theorems about cancellation.
 -/
-theorem mul_left_cancel {a b c : G} (h : a * b = a * c) : b = c := sorry
+theorem mul_left_cancel {a b c : G} (h : a * b = a * c) : b = c := calc
+  b = 1*b := by rw[one_mul]
+  _= (a⁻¹*a)*b := by rw[inv_mul_cancel]
+  _= a⁻¹*(a*b) := by rw[mul_assoc]
+  _= a⁻¹*(a*c) := by rw[h]
+  _= (a⁻¹*a)*c := by rw[mul_assoc]
+  _= 1 * c := by rw[inv_mul_cancel]
+  _= c := by rw[one_mul]
 
-theorem mul_right_cancel {a b c : G} (h : a*b = c*b) : a = c := sorry
+theorem mul_right_cancel {a b c : G} (h : a*b = c*b) : a = c := calc
+  a = a*1 := by rw[mul_one]
+  _= a*(b*b⁻¹) := by rw[mul_inv_cancel]
+  _= (a*b)*b⁻¹ := by rw[mul_assoc]
+  _= (c*b)*b⁻¹ := by rw[h]
+  _= c*(b*b⁻¹) := by rw[mul_assoc]
+  _= c*1 := by rw[mul_inv_cancel]
+  _= c := by rw[mul_one]
 
 /-
   Now, we can use cancellation to prove that f 1 = 1.
   This result proves that nothing is lost by the stronger form of
   morphism of groups.
 -/
-example (f : G →* H) : f 1 = 1 := sorry
+example (f : G →* H) : f 1 = 1 := by
+  have : (f 1) * (f 1) = 1 * f 1 := calc
+    (f 1) * (f 1) = f (1*1) := by rw[map_mul]
+    _= f 1 := by rw[one_mul 1]
+    _= 1 * f 1 := by rw[one_mul]
+  exact mul_right_cancel this
 
+#check MonoidHom.mk'
 
 /-
   With a little induction, this result allows us to conclude that
@@ -138,9 +165,9 @@ example (f : G →* H) (a b : G) : f (a*b) = (f a) * (f b) := map_mul f a b
 theorem map_npow (n : ℕ) (f : G →* H) (a : G) : f (a^n) = (f a)^n := by
   induction n with
   | zero =>
-    sorry
+    rw [pow_zero,pow_zero,map_one]
   | succ n ih =>
-    sorry
+    rw[pow_succ,map_mul,ih,← pow_succ]
 
 /-
   We can extend this to the full set of integers by proving that `f`
@@ -148,9 +175,15 @@ theorem map_npow (n : ℕ) (f : G →* H) (a : G) : f (a^n) = (f a)^n := by
   about the properties that define the inverse.
 -/
 
-theorem eq_inv_of_mul_eq_one_left {a b : G} (h : a * b = 1) : a = b⁻¹ := sorry
+theorem eq_inv_of_mul_eq_one_left {a b : G} (h : a * b = 1) : a = b⁻¹ := calc
+  a = a*(b*b⁻¹) := by rw[mul_inv_cancel,mul_one]
+  _= (a*b)*b⁻¹ := by rw[mul_assoc]
+  _= b⁻¹ := by rw[h,one_mul]
 
-theorem eq_inv_of_mul_eq_one_right {a b : G} (h : a * b = 1) : b = a⁻¹ := sorry
+theorem eq_inv_of_mul_eq_one_right {a b : G} (h : a * b = 1) : b = a⁻¹ := calc
+  b = (a⁻¹*a)*b := by rw[inv_mul_cancel,one_mul]
+  _= a⁻¹*(a*b) := by rw[mul_assoc]
+  _= a⁻¹ := by rw[h,mul_one]
 
 /-
   This means to prove f a⁻¹ = (f a)⁻¹, it suffices to prove either

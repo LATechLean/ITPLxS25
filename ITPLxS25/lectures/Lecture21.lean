@@ -42,7 +42,4 @@ example (f : R ≃+* S) : S ≃+* R := RingEquiv.symm f -- Equivalently, f.symm
 noncomputable example (f : R →+* S) (h : Function.Bijective f) : R ≃* S :=
   RingEquiv.ofBijective f h
 
-variable {R : Type u} [AddCommGroup R] [Mul R] [One R]
-example (a : R) : a + -a = 0 := by exact add_neg_cancel a
-
 end Lecture_21
