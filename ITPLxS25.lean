@@ -19,3 +19,5 @@ import ITPLxS25.lectures.Lecture15
 import ITPLxS25.lectures.Lecture17
 import ITPLxS25.lectures.Lecture18
 import ITPLxS25.lectures.Lecture19
+import ITPLxS25.lectures.Lecture20
+import ITPLxS25.lectures.Lecture21
